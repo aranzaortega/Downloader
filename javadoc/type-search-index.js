@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"aios","l":"Application"},{"p":"aios","l":"Controllers"},{"p":"aios","l":"DownloadManager"},{"p":"aios","l":"DownloadTask"},{"p":"aios","l":"DownloadTaskImpl"},{"p":"aios","l":"Main"},{"p":"aios","l":"UserInterface"}];updateSearchResults();
