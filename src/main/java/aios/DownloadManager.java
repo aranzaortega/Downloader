@@ -1,7 +1,6 @@
 package aios;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -83,44 +82,23 @@ public class DownloadManager {
     }
 
     /**
-     * It will show all the lists in the moment that is called
+     * It will show a copy of the pending list
      */
-    public void ShowLists(){
+    public List pendingListCopy(){
+        return pendingTasks;
+    }
 
-        //Pending Tasks
-        UserInterface.printPendingTasksMenu();
-        if (pendingTasks.isEmpty()){
-            UserInterface.printEmptyList();
-        } else {
-            for(DownloadTask currentDownload:pendingTasks){
-               URL url = currentDownload.getURL();
-               UserInterface.printPendingTasks(url);
-            }
-        }
+    /**
+     * It will show a copy of the ongoing list
+     */
+    public List ongoingListCopy(){
+        return ongoingTasks;
+    }
 
-        //Ongoing Tasks
-        UserInterface.printOngoingTasksMenu();
-        if (ongoingTasks.isEmpty()){
-            UserInterface.printEmptyList();
-        } else {
-            for(DownloadTask currentDownload:ongoingTasks){
-                URL url = currentDownload.getURL();
-                double currentPercent = currentDownload.getProgress();
-                long pendingBytes = currentDownload.getPendingByteCount();
-                long totalBytes = currentDownload.getTotalByteCount();
-                UserInterface.printOngoingTasks(url, pendingBytes, totalBytes, currentPercent);
-            }
-        }
-
-        //Pending Tasks
-        UserInterface.printFinishedTasksMenu();
-        if (finishedTasks.isEmpty()){
-            UserInterface.printEmptyList();
-        } else {
-            for(DownloadTask currentDownload:finishedTasks){
-                URL url = currentDownload.getURL();
-                UserInterface.printFinishedTasks(url);
-            }
-        }
+    /**
+     * It will show a copy of the finished list
+     */
+    public List finishedListCopy(){
+        return finishedTasks;
     }
 }

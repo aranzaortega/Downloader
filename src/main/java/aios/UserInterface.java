@@ -73,6 +73,13 @@ public class UserInterface {
     /**
      *Prints the pending tasks list menu with header style
      */
+    public static void printIntroToGo(){
+        System.out.println("Presiona Intro cuando quieras salir de esta opción");
+    }
+
+    /**
+     *Prints the pending tasks list menu with header style
+     */
     public static void printPendingTasksMenu(){
         printHeader("Lista de Descargas pendientes");
     }

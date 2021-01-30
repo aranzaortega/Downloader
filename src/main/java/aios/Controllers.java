@@ -1,6 +1,10 @@
 package aios;
 
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Contains all the logic functions at the application level
@@ -25,13 +29,13 @@ public class Controllers {
 
             switch (userChoice) {
                 case "1":
-                    TextDownloader();
+                    TextDownloadsController();
                     break;
                 case "2":
-                    BinaryDownloader();
+                    BinaryDownloadsController();
                     break;
                 case "3":
-                    ShowDownloads();
+                    ShowDownloadsController();
                     break;
                 case "0":
                     finish = true;
@@ -41,13 +45,14 @@ public class Controllers {
                     break;
             }
         }
+        System.exit(0);
     }
 
     /**
      * Gets the user data for the text download and
      * calls that task from the DownloadManager
      */
-    public static void TextDownloader(){
+    public static void TextDownloadsController(){
         UserInterface.printUrlAsk();
         String url = UserInterface.readUserLine();
         UserInterface.printPathAsk();
@@ -64,7 +69,7 @@ public class Controllers {
      * Gets the user data for the binary download and
      * calls that task from the DownloadManager
      */
-    public static void BinaryDownloader(){
+    public static void BinaryDownloadsController(){
         UserInterface.printUrlAsk();
         String url = UserInterface.readUserLine();
         UserInterface.printPathAsk();
@@ -78,10 +83,76 @@ public class Controllers {
     }
 
     /**
-     * Shows the current downloads
-     * calls that task from the DownloadManager
+     * Controls the show downloads option
      */
-    public static void ShowDownloads() {
-        Application.getDownloadManager().ShowLists();
+    public static void ShowDownloadsController() {
+        UserInterface.printIntroToGo();
+        ShowListsWithTimer();
+    }
+
+    /**
+     * It will show all the lists in the moment that is called
+     */
+    public static void ShowLists(){
+
+        //Pending Tasks
+        List<DownloadTask> pendingTasks = Application.getDownloadManager().pendingListCopy();
+
+        UserInterface.printPendingTasksMenu();
+        if (pendingTasks.isEmpty()){
+            UserInterface.printEmptyList();
+        } else {
+            for(DownloadTask currentDownload:pendingTasks){
+                URL url = currentDownload.getURL();
+                UserInterface.printPendingTasks(url);
+            }
+        }
+
+        //Ongoing Tasks
+        List<DownloadTask> ongoingTasks = Application.getDownloadManager().ongoingListCopy();
+
+        UserInterface.printOngoingTasksMenu();
+        if (ongoingTasks.isEmpty()){
+            UserInterface.printEmptyList();
+        } else {
+            for(DownloadTask currentDownload:ongoingTasks){
+                URL url = currentDownload.getURL();
+                double currentPercent = currentDownload.getProgress();
+                long pendingBytes = currentDownload.getPendingByteCount();
+                long totalBytes = currentDownload.getTotalByteCount();
+                UserInterface.printOngoingTasks(url, pendingBytes, totalBytes, currentPercent);
+            }
+        }
+
+        //Finished Tasks
+        List<DownloadTask> finishedTasks = Application.getDownloadManager().finishedListCopy();
+
+        UserInterface.printFinishedTasksMenu();
+        if (finishedTasks.isEmpty()){
+            UserInterface.printEmptyList();
+        } else {
+            for(DownloadTask currentDownload:finishedTasks){
+                URL url = currentDownload.getURL();
+                UserInterface.printFinishedTasks(url);
+            }
+        }
+    }
+
+    /**
+     * It will show all the lists
+     */
+    public static void ShowListsWithTimer(){
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                ShowLists();
+            }
+        };
+        Timer timer = new Timer("Timer");
+        timer.scheduleAtFixedRate(task, 1000, 3000);
+
+        UserInterface.readUserLine();
+        timer.cancel();
+        timer.purge();
     }
 }

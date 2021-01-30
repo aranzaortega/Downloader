@@ -30,7 +30,7 @@ public class DownloadTaskImpl implements DownloadTask{
     }
 
     /**
-     * Methods for getting the download information
+     * Download getters
      */
     @Override
     public URL getURL() {
@@ -56,6 +56,7 @@ public class DownloadTaskImpl implements DownloadTask{
     public long getPendingByteCount() {
         return totalBytes - currentBytes;
     }
+
     @Override
     public long getTotalByteCount() {
         return totalBytes;
